@@ -1,6 +1,7 @@
 package textDecode
 
 import spinal.core._
+import spinal.core.sim.{SimBitVectorPimper, SimDataPimper}
 import spinal.lib._
 
 
@@ -32,6 +33,12 @@ class oProcess extends Component{
   val rFinish    = Reg(Bool(), init = False)
   val oReady     = Bool()
   val quantizeYUV= UInt(9 bits)
+
+  val oCnt       = Reg(UInt(9 bits)) init(0)  simPublic()// for sim
+
+  when(io.oStreamIn.fire) {
+    oCnt := oCnt + U(1)
+  }
 
   io.oStreamIn >> inFifo.io.push
   // only O need to read from fifo
